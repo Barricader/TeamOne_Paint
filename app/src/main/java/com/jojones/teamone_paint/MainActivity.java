@@ -10,6 +10,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // test
+<<<<<<< HEAD
         //Test - Juan
+=======
+        // test 2
+>>>>>>> origin/master
     }
 }

@@ -13,7 +13,6 @@ import android.view.View;
 // Code from https://examples.javacodegeeks.com/android/core/graphics/canvas-graphics/android-canvas-example/
 
 public class CustomCanvasView extends View {
-
     public int width;
     public int height;
     private Bitmap mBitmap;
@@ -23,6 +22,41 @@ public class CustomCanvasView extends View {
     private Paint mPaint;
     private float mX, mY;
     private static final float TOLERANCE = 5;
+
+    Paint myRedPaintFill;
+    Paint myGreenPaintStroke;
+    Path myPath;
+
+//    public DrawView(Context context, AttributeSet attrs) {
+//        super(context, attrs);
+//        init();
+//
+//    }
+//    private void init(){
+//        myRedPaintFill = new Paint();
+//        myRedPaintFill.setColor(Color.RED);
+//        myRedPaintFill.setStyle(Paint.Style.FILL);
+//
+//        myGreenPaintStroke = new Paint();
+//        myGreenPaintStroke.setColor(0xff337722); // aarrggbb alpha is first
+//        myGreenPaintStroke.setStyle(Paint.Style.STROKE);
+//        myGreenPaintStroke.setStrokeWidth(10);
+//    }
+//
+//    protected void onDraw(Canvas canvas) {
+//        super.onDraw(canvas);
+//
+//        canvas.drawLine(0, 0, 200, 200, myGreenPaintStroke);
+//        canvas.drawCircle(100, 300, 40, myRedPaintFill);
+//        canvas.drawRect(200,300, 250, 350, myGreenPaintStroke);
+//
+//        myPath = new Path();
+//        myPath.moveTo(400,400);
+//        myPath.lineTo(500,600);
+//        myPath.lineTo(300,600);
+//        canvas.drawPath(myPath, myRedPaintFill);
+//
+//    }
 
     public CustomCanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);

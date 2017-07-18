@@ -1,20 +1,20 @@
 package com.jojones.teamone_paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
+    CustomCanvasView customCanvas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // test
-        //Test - Juan
-        // test 2 - merge test perhaps
 
+        customCanvas = (CustomCanvasView) findViewById(R.id.customCanvas);
+    }
 
-        //test 3
-
-        //Ryle Test
+    public void clearCanvas(View view) {
+        customCanvas.clearCanvas();
     }
 }

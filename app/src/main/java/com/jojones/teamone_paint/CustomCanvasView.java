@@ -43,6 +43,7 @@ public class CustomCanvasView extends View {
     public Tool currentTool;
 
     public ArrayList<Stroke> allStrokes = new ArrayList<Stroke>();
+    public ArrayList<Circle> circles = new ArrayList<>();
 
     boolean changeBrushSize = false;
 
@@ -136,10 +137,14 @@ public class CustomCanvasView extends View {
             canvas.drawPath(s.get_path(), s.get_paint());
         }
 
+        for (Circle c : circles) {
+            canvas.drawCircle(c.x, c.y, c.r, c.p);
+        }
     }
 
     // when ACTION_DOWN start touch according to the x,y values
     private void startTouch(float x, float y) {
+        if (currentTool == Tool.Pencil || currentTool == Tool.Eraser) {
             ////mPath.moveTo(x, y);
             Path p = new Path();
             Paint pt = new Paint();
@@ -151,10 +156,12 @@ public class CustomCanvasView extends View {
             Stroke s = new Stroke(p, pt);
             allStrokes.add(s);
             allStrokes.get(allStrokes.size() - 1).get_path().moveTo(x, y);
+
             if (currentTool == Tool.Eraser) {
                 allStrokes.get(allStrokes.size() - 1).get_paint().setColor(Color.WHITE);
                 allStrokes.get(allStrokes.size() - 1).get_paint().setStrokeWidth(40f);
             }
+
             //This is where the brush size is changed - Juan
             if (changeBrushSize) {
                 allStrokes.get(allStrokes.size() - 1).get_paint().setStrokeWidth(brushSizeIncrementer);
@@ -162,19 +169,40 @@ public class CustomCanvasView extends View {
             }
             mX = x;
             mY = y;
+        }
+
+        if (currentTool == Tool.Circle) {
+            circleTouch(x, y);
+        }
     }
 
     // when ACTION_MOVE move touch according to the x,y values
     private void moveTouch(float x, float y) {
-        Path p = allStrokes.get(allStrokes.size() - 1).get_path();
-        float dx = Math.abs(x - mX);
-        float dy = Math.abs(y - mY);
-        if (dx >= TOLERANCE || dy >= TOLERANCE) {
-            ////Changed "mPath" to "p"
-            p.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
-            mX = x;
-            mY = y;
+        if (currentTool == Tool.Pencil || currentTool == Tool.Eraser) {
+            Path p = allStrokes.get(allStrokes.size() - 1).get_path();
+            float dx = Math.abs(x - mX);
+            float dy = Math.abs(y - mY);
+            if (dx >= TOLERANCE || dy >= TOLERANCE) {
+                ////Changed "mPath" to "p"
+                p.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+                mX = x;
+                mY = y;
+            }
         }
+
+        if (currentTool == Tool.Circle) {
+            circleTouch(x, y);
+        }
+    }
+
+    public void circleTouch(float x, float y) {
+        Paint pt = new Paint();
+        pt.setAntiAlias(true);
+        pt.setColor(currColor);
+        pt.setStyle(Paint.Style.STROKE);
+        pt.setStrokeJoin(Paint.Join.ROUND);
+
+        circles.add(new Circle(x, y, 20, pt));
     }
 
     public void clearCanvas() {
@@ -182,6 +210,8 @@ public class CustomCanvasView extends View {
         {
             s.get_path().reset();
         }
+
+        circles.clear();
         ////mPath.reset();
         invalidate();
     }
@@ -189,7 +219,9 @@ public class CustomCanvasView extends View {
     // when ACTION_UP stop touch
     private void upTouch()
     {
-        allStrokes.get(allStrokes.size() - 1).get_path().lineTo(mX, mY);
+        if (currentTool == Tool.Pencil || currentTool == Tool.Eraser) {
+            allStrokes.get(allStrokes.size() - 1).get_path().lineTo(mX, mY);
+        }
         ////mPath.lineTo(mX, mY);
     }
 

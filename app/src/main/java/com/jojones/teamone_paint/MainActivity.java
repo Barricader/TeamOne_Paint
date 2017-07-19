@@ -1,4 +1,5 @@
 package com.jojones.teamone_paint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         customCanvas = (CustomCanvasView) findViewById(R.id.customCanvas);
 
+        findViewById(R.id.pencilButton).setBackgroundColor(Color.GRAY);
+        findViewById(R.id.eraserButton).setBackgroundColor(Color.LTGRAY);
     }
     public void changeBrushSize(View view){customCanvas.changeBrushSize();}
     public void clearCanvas(View view) {
@@ -27,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void pencilOnClick(View v)
     {
+        v.setBackgroundColor(Color.GRAY);
+        findViewById(R.id.eraserButton).setBackgroundColor(Color.LTGRAY);
         customCanvas.pencilOnClick();
     }
 
     public void eraserButtonOnClick(View v)
     {
+        v.setBackgroundColor(Color.GRAY);
+        findViewById(R.id.pencilButton).setBackgroundColor(Color.LTGRAY);
         customCanvas.eraserButtonOnClick();
     }
 

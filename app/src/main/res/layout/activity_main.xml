@@ -87,7 +87,7 @@
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <Button
-            android:id="@+id/Pencil"
+            android:id="@+id/pencilButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="505dp"

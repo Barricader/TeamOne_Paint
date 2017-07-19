@@ -65,16 +65,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void openOptions(View v) {
         ConstraintLayout opts = (ConstraintLayout) findViewById(R.id.options);
-        findViewById(R.id.imgOpenOptions).setVisibility(View.INVISIBLE);
+        findViewById(R.id.imgOpenOptions).setClickable(false);
 
         expand(opts);
     }
 
     public void closeOptions(View v) {
         ConstraintLayout opts = (ConstraintLayout) findViewById(R.id.options);
-        findViewById(R.id.imgOpenOptions).setVisibility(View.VISIBLE);
+        findViewById(R.id.imgOpenOptions).setClickable(true);
 
         collapse(opts);
+    }
+
+    public void undo(View v) {
+        customCanvas.undo();
     }
 
     public void resetColor() {

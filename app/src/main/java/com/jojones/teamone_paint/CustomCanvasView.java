@@ -26,7 +26,6 @@ public class CustomCanvasView extends View {
     private Path mPath;
     Context context;
     private Paint mPaint;
-    private Paint mPaintResized;
     private float mX, mY;
     private static final float TOLERANCE = 5;
     private float brushSizeIncrementer = 0;
@@ -155,31 +154,6 @@ public class CustomCanvasView extends View {
         }
     }
 
-    public void circleTouch(float x, float y) {
-        Paint pt = new Paint();
-        pt.setAntiAlias(true);
-        pt.setColor(currColor);
-        pt.setStyle(Paint.Style.STROKE);
-        pt.setStrokeWidth(10f);
-
-        drawables.add(new Circle(x, y, 30, pt));
-    }
-
-    public void squareTouch(float x, float y) {
-        Paint pt = new Paint();
-        pt.setAntiAlias(true);
-        pt.setColor(currColor);
-        pt.setStyle(Paint.Style.STROKE);
-        pt.setStrokeWidth(10f);
-
-        drawables.add(new Square(x, y, 50, 50, pt));
-    }
-
-    public void clearCanvas() {
-        drawables.clear();
-        invalidate();
-    }
-
     private void upTouch() {
         if (currentTool == Tool.Pencil || currentTool == Tool.Eraser) {
             ((Stroke) drawables.get(drawables.size() - 1)).get_path().lineTo(mX, mY);
@@ -210,6 +184,38 @@ public class CustomCanvasView extends View {
         }
 
         return false;
+    }
+
+    public void circleTouch(float x, float y) {
+        Paint pt = new Paint();
+        pt.setAntiAlias(true);
+        pt.setColor(currColor);
+        pt.setStyle(Paint.Style.STROKE);
+        pt.setStrokeWidth(10f);
+
+        drawables.add(new Circle(x, y, 40, pt));
+    }
+
+    public void squareTouch(float x, float y) {
+        Paint pt = new Paint();
+        pt.setAntiAlias(true);
+        pt.setColor(currColor);
+        pt.setStyle(Paint.Style.STROKE);
+        pt.setStrokeWidth(10f);
+
+        drawables.add(new Square(x, y, 50, 50, pt));
+    }
+
+    public void clearCanvas() {
+        drawables.clear();
+        invalidate();
+    }
+
+    public void undo() {
+        if (drawables.size() > 0) {
+            drawables.remove(drawables.size() - 1);
+        }
+        invalidate();
     }
 
     public void changeTool(Tool t) {

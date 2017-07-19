@@ -34,7 +34,7 @@
         android:layout_height="604dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
-        android:background="@android:color/darker_gray"
+        android:background="#A0CCCCCC"
         android:minHeight="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -138,6 +138,17 @@
             android:layout_marginLeft="16dp"
             android:onClick="clearCanvas"
             android:text="Clear Canvas"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/btnUndo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="126dp"
+            android:layout_marginLeft="142dp"
+            android:onClick="undo"
+            android:text="Undo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 

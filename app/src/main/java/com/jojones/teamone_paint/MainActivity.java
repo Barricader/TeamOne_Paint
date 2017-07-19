@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Animation a = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-//                v.getLayoutParams().height = interpolatedTime == 1 ? targetHeight : (int)(targetHeight * interpolatedTime);
+                v.setVisibility(View.VISIBLE);
                 v.getLayoutParams().height = (int)(targetHeight * interpolatedTime);
                 v.requestLayout();
             }
@@ -67,21 +67,23 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         };
-        a.setFillBefore(true);
-        a.setFillAfter(true);
 
         a.setAnimationListener(new Animation.AnimationListener() {
-                                   public void onAnimationEnd(Animation animation) {
-                                       v.setDrawingCacheEnabled(false);
-                                   }
+            @Override
+            public void onAnimationStart(Animation animation) {
+                v.setVisibility(View.GONE);
+            }
 
-                                   public void onAnimationRepeat(Animation animation) {
-                                   }
+            @Override
+            public void onAnimationEnd(Animation animation) {
 
-                                   public void onAnimationStart(Animation animation) {
-                                       v.setDrawingCacheEnabled(true);
-                                   }
-                               });
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
         // 1dp/ms
         a.setDuration((int)(targetHeight / v.getContext().getResources().getDisplayMetrics().density));

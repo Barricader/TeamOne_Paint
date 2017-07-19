@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         viewTools.add(findViewById(R.id.pencilButton));
         viewTools.add(findViewById(R.id.eraserButton));
         viewTools.add(findViewById(R.id.circleButton));
+        viewTools.add(findViewById(R.id.squareButton));
 
         resetColor();
         findViewById(R.id.pencilButton).setBackgroundColor(Color.GRAY);
@@ -36,20 +37,6 @@ public class MainActivity extends AppCompatActivity {
     public void clearCanvas(View view) {
         customCanvas.clearCanvas();
     }
-
-//    public void pencilOnClick(View v)
-//    {
-//        resetColor();
-//        v.setBackgroundColor(Color.GRAY);
-//        customCanvas.pencilOnClick();
-//    }
-//
-//    public void eraserButtonOnClick(View v)
-//    {
-//        resetColor();
-//        v.setBackgroundColor(Color.GRAY);
-//        customCanvas.eraserButtonOnClick();
-//    }
 
     public void toolOnClick(View v) {
         resetColor();
@@ -64,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.circleButton:
                 customCanvas.changeTool(CustomCanvasView.Tool.Circle);
+                break;
+            case R.id.squareButton:
+                customCanvas.changeTool(CustomCanvasView.Tool.Square);
                 break;
         }
     }

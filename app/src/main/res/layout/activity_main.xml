@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="505dp"
             android:layout_marginLeft="16dp"
-            android:onClick="pencilOnClick"
+            android:onClick="toolOnClick"
             android:text="Pencil"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
@@ -91,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="505dp"
-            android:layout_marginLeft="105dp"
+            android:layout_marginLeft="104dp"
             android:onClick="toolOnClick"
             android:text="Eraser"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -102,9 +102,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="505dp"
-            android:layout_marginLeft="193dp"
+            android:layout_marginLeft="192dp"
             android:onClick="toolOnClick"
             android:text="Circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/squareButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="457dp"
+            android:layout_marginLeft="16dp"
+            android:onClick="toolOnClick"
+            android:text="Square"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 

@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
         customCanvas = (CustomCanvasView) findViewById(R.id.customCanvas);
     }
-
+    public void changeBrushSize(View view){customCanvas.changeBrushSize();}
     public void clearCanvas(View view) {
         customCanvas.clearCanvas();
     }

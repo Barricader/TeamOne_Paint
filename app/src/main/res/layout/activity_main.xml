@@ -20,4 +20,12 @@
         android:layout_height="match_parent"
         android:textColor="#FFFFFF" />
 
+    <Button
+        android:id="@+id/changeSizeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:onClick="changeBrushSize"
+        android:text="change size" />
+
 </FrameLayout>

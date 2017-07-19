@@ -7,8 +7,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.ArrayList;
 
 // Code from https://examples.javacodegeeks.com/android/core/graphics/canvas-graphics/android-canvas-example/
 
@@ -20,9 +23,11 @@ public class CustomCanvasView extends View {
     private Path mPath;
     Context context;
     private Paint mPaint;
+    private Paint mPaintResized;
     private float mX, mY;
     private static final float TOLERANCE = 5;
-
+    private float brushSizeIncrementer = 20;
+    ArrayList<Paint> brushes = new ArrayList<>();
     Paint myRedPaintFill;
     Paint myGreenPaintStroke;
     Path myPath;
@@ -65,6 +70,7 @@ public class CustomCanvasView extends View {
         // we set a new Path
         mPath = new Path();
 
+
         // and we set a new Paint with the desired attributes
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -72,6 +78,19 @@ public class CustomCanvasView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(4f);
+        brushes.add(mPaint);
+    }
+
+    public void changeBrushSize(){
+
+        brushes.add(new Paint(){{
+            setAntiAlias(true);
+            setColor(Color.BLACK);
+            setStyle(Paint.Style.STROKE);
+            setStrokeJoin(Paint.Join.ROUND);
+            setStrokeWidth(10 +brushSizeIncrementer);
+        }});
+        brushSizeIncrementer += 10;
     }
 
     // override onSizeChanged
@@ -89,7 +108,8 @@ public class CustomCanvasView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         // draw the mPath with the mPaint on the canvas when onDraw
-        canvas.drawPath(mPath, mPaint);
+        canvas.drawPath(mPath, brushes.get(brushes.size() -1));
+
     }
 
     // when ACTION_DOWN start touch according to the x,y values

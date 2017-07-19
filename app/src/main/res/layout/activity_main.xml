@@ -22,6 +22,14 @@
         android:textColor="#FFFFFF"/>
 
     <Button
+        android:id="@+id/eraserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:onClick="eraserButtonOnClick"
+        android:text="Eraser" />
+
+    <Button
         android:id="@+id/changeSizeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,11 +38,10 @@
         android:text="change size" />
 
     <Button
-        android:id="@+id/eraserButton"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center"
-        android:onClick="eraserButtonOnClick"
-        android:text="Eraser" />
+        android:onClick="ChangeColorHandler"
+        android:text="Change Color" />
 
 </FrameLayout>

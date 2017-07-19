@@ -31,6 +31,7 @@ public class CustomCanvasView extends View {
     Paint myRedPaintFill;
     Paint myGreenPaintStroke;
     Path myPath;
+    int currColor = Color.BLACK;
 
     boolean eraser = false;
     public ArrayList<Stroke> allStrokes = new ArrayList<Stroke>();
@@ -133,7 +134,7 @@ public class CustomCanvasView extends View {
         Path p = new Path();
         Paint pt = new Paint();
         pt.setAntiAlias(true);
-        pt.setColor(Color.BLACK);
+        pt.setColor(currColor);
         pt.setStyle(Paint.Style.STROKE);
         pt.setStrokeJoin(Paint.Join.ROUND);
         pt.setStrokeWidth(4f);
@@ -210,5 +211,8 @@ public class CustomCanvasView extends View {
     public void eraserButtonOnClick()
     {
         eraser = !eraser;
+    }
+    public void setColor(int color){
+        currColor = color;
     }
 }

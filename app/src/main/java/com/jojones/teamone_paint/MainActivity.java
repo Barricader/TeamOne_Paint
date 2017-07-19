@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         collapse(opts);
     }
 
-    public static void expand(final View v) {
+    public void expand(final View v) {
         final float heightDP = 604f;
         final float scale = v.getContext().getResources().getDisplayMetrics().density;
 
@@ -85,12 +85,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        customCanvas.isOn = false;
+
         // 1dp/ms
         a.setDuration((int)(targetHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
 
-    public static void collapse(final View v) {
+    public void collapse(final View v) {
         final int initialHeight = v.getMeasuredHeight();
 
         Animation a = new Animation() {
@@ -110,8 +112,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        a.setFillBefore(true);
-        a.setFillAfter(true);
+        customCanvas.isOn = true;
 
         // 1dp/ms
         a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density));

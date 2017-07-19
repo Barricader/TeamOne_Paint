@@ -32,6 +32,7 @@ public class CustomCanvasView extends View {
     Paint myGreenPaintStroke;
     Path myPath;
     int currColor = Color.BLACK;
+    public boolean isOn;
 
     boolean eraser = false;
     public ArrayList<Stroke> allStrokes = new ArrayList<Stroke>();
@@ -85,6 +86,7 @@ public class CustomCanvasView extends View {
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(4f);
         brushes.add(mPaint);
+        isOn = true;
     }
 
     public void changeBrushSize()
@@ -130,30 +132,28 @@ public class CustomCanvasView extends View {
 
     // when ACTION_DOWN start touch according to the x,y values
     private void startTouch(float x, float y) {
-        ////mPath.moveTo(x, y);
-        Path p = new Path();
-        Paint pt = new Paint();
-        pt.setAntiAlias(true);
-        pt.setColor(currColor);
-        pt.setStyle(Paint.Style.STROKE);
-        pt.setStrokeJoin(Paint.Join.ROUND);
-        pt.setStrokeWidth(4f);
-        Stroke s = new Stroke(p, pt);
-        allStrokes.add(s);
-        allStrokes.get(allStrokes.size() - 1).get_path().moveTo(x, y);
-        if(eraser)
-        {
-            allStrokes.get(allStrokes.size() - 1).get_paint().setColor(Color.WHITE);
-            allStrokes.get(allStrokes.size() - 1).get_paint().setStrokeWidth(40f);
-        }
-        //This is where the brush size is changed - Juan
-        if(changeBrushSize)
-        {
-            allStrokes.get(allStrokes.size() - 1).get_paint().setStrokeWidth(brushSizeIncrementer);
-            changeBrushSize = false;
-        }
-        mX = x;
-        mY = y;
+            ////mPath.moveTo(x, y);
+            Path p = new Path();
+            Paint pt = new Paint();
+            pt.setAntiAlias(true);
+            pt.setColor(currColor);
+            pt.setStyle(Paint.Style.STROKE);
+            pt.setStrokeJoin(Paint.Join.ROUND);
+            pt.setStrokeWidth(4f);
+            Stroke s = new Stroke(p, pt);
+            allStrokes.add(s);
+            allStrokes.get(allStrokes.size() - 1).get_path().moveTo(x, y);
+            if (eraser) {
+                allStrokes.get(allStrokes.size() - 1).get_paint().setColor(Color.WHITE);
+                allStrokes.get(allStrokes.size() - 1).get_paint().setStrokeWidth(40f);
+            }
+            //This is where the brush size is changed - Juan
+            if (changeBrushSize) {
+                allStrokes.get(allStrokes.size() - 1).get_paint().setStrokeWidth(brushSizeIncrementer);
+                changeBrushSize = false;
+            }
+            mX = x;
+            mY = y;
     }
 
     // when ACTION_MOVE move touch according to the x,y values
@@ -188,24 +188,28 @@ public class CustomCanvasView extends View {
     //override the onTouchEvent
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
+        if (isOn) {
+            float x = event.getX();
+            float y = event.getY();
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                startTouch(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                moveTouch(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-                upTouch();
-                invalidate();
-                break;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    startTouch(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    moveTouch(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    upTouch();
+                    invalidate();
+                    break;
+            }
+            return true;
         }
-        return true;
+
+        return false;
     }
 
     public void eraserButtonOnClick()

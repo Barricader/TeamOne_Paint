@@ -31,13 +31,37 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/options"
         android:layout_width="412dp"
-        android:layout_height="1dp"
+        android:layout_height="604dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
         android:background="@android:color/darker_gray"
         android:minHeight="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtBrushOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="334dp"
+            android:layout_marginLeft="16dp"
+            android:text="Brush Options"
+            android:textColor="@android:color/black"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/txtCanvasOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="174dp"
+            android:layout_marginLeft="16dp"
+            android:text="Canvas Options"
+            android:textColor="@android:color/black"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
         <Button
             android:id="@+id/eraserButton"
@@ -52,10 +76,10 @@
 
         <Button
             android:id="@+id/changeSizeButton"
-            android:layout_width="88dp"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginBottom="278dp"
-            android:layout_marginLeft="58dp"
+            android:layout_marginLeft="16dp"
             android:onClick="changeBrushSize"
             android:text="change size"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -65,8 +89,8 @@
             android:id="@+id/btnClearCanvas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="118dp"
-            android:layout_marginLeft="243dp"
+            android:layout_marginBottom="126dp"
+            android:layout_marginLeft="16dp"
             android:onClick="clearCanvas"
             android:text="Clear Canvas"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -88,11 +112,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="278dp"
-            android:layout_marginLeft="192dp"
+            android:layout_marginLeft="128dp"
             android:onClick="ChangeColorHandler"
             android:text="Change Color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
+
 </android.support.constraint.ConstraintLayout>

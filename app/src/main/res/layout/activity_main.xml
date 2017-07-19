@@ -1,40 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.jojones.teamone_paint.MainActivity">
 
-    <Button
-        android:id="@+id/btnClearCanvas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:onClick="clearCanvas"
-        android:text="Clear Canvas" />
-
     <com.jojones.teamone_paint.CustomCanvasView
         android:id="@+id/customCanvas"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
         android:background="@android:color/white"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/changeSizeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|left"
-        android:onClick="changeBrushSize"
-        android:text="change size" />
+    <ImageView
+        android:id="@+id/imgOpenOptions"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="openOptions"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/cog" />
 
-    <Button
-        android:id="@+id/eraserButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center"
-        android:onClick="eraserButtonOnClick"
-        android:text="Eraser" />
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/options"
+        android:layout_width="412dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="-1dp"
+        android:animateLayoutChanges="true"
+        android:background="@android:color/darker_gray"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <Button
+            android:id="@+id/eraserButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="468dp"
+            android:layout_marginLeft="192dp"
+            android:onClick="eraserButtonOnClick"
+            android:text="Eraser"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/changeSizeButton"
+            android:layout_width="88dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="216dp"
+            android:layout_marginLeft="55dp"
+            android:onClick="changeBrushSize"
+            android:text="change size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/btnClearCanvas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="118dp"
+            android:layout_marginLeft="243dp"
+            android:onClick="clearCanvas"
+            android:text="Clear Canvas"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/closeOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="162dp"
+            android:onClick="closeOptions"
+            android:text="Close"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

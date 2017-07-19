@@ -8,11 +8,14 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import yuku.ambilwarna.AmbilWarnaDialog;
 //https://github.com/yukuku/ambilwarna
 
 public class MainActivity extends AppCompatActivity {
     CustomCanvasView customCanvas;
+    ArrayList<View> viewTools;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,26 +23,49 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         customCanvas = (CustomCanvasView) findViewById(R.id.customCanvas);
 
+        viewTools = new ArrayList<View>();
+
+        viewTools.add(findViewById(R.id.pencilButton));
+        viewTools.add(findViewById(R.id.eraserButton));
+        viewTools.add(findViewById(R.id.circleButton));
+
+        resetColor();
         findViewById(R.id.pencilButton).setBackgroundColor(Color.GRAY);
-        findViewById(R.id.eraserButton).setBackgroundColor(Color.LTGRAY);
     }
     public void changeBrushSize(View view){customCanvas.changeBrushSize();}
     public void clearCanvas(View view) {
         customCanvas.clearCanvas();
     }
 
-    public void pencilOnClick(View v)
-    {
-        v.setBackgroundColor(Color.GRAY);
-        findViewById(R.id.eraserButton).setBackgroundColor(Color.LTGRAY);
-        customCanvas.pencilOnClick();
-    }
+//    public void pencilOnClick(View v)
+//    {
+//        resetColor();
+//        v.setBackgroundColor(Color.GRAY);
+//        customCanvas.pencilOnClick();
+//    }
+//
+//    public void eraserButtonOnClick(View v)
+//    {
+//        resetColor();
+//        v.setBackgroundColor(Color.GRAY);
+//        customCanvas.eraserButtonOnClick();
+//    }
 
-    public void eraserButtonOnClick(View v)
-    {
+    public void toolOnClick(View v) {
+        resetColor();
         v.setBackgroundColor(Color.GRAY);
-        findViewById(R.id.pencilButton).setBackgroundColor(Color.LTGRAY);
-        customCanvas.eraserButtonOnClick();
+
+        switch (v.getId()) {
+            case R.id.pencilButton:
+                customCanvas.changeTool(CustomCanvasView.Tool.Pencil);
+                break;
+            case R.id.eraserButton:
+                customCanvas.changeTool(CustomCanvasView.Tool.Eraser);
+                break;
+            case R.id.circleButton:
+                customCanvas.changeTool(CustomCanvasView.Tool.Circle);
+                break;
+        }
     }
 
     public void openOptions(View v) {
@@ -54,6 +80,12 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.imgOpenOptions).setVisibility(View.VISIBLE);
 
         collapse(opts);
+    }
+
+    public void resetColor() {
+        for (View v : viewTools) {
+            v.setBackgroundColor(Color.LTGRAY);
+        }
     }
 
     public void expand(final View v) {

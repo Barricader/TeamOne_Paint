@@ -16,6 +16,13 @@ import java.util.ArrayList;
 // Code from https://examples.javacodegeeks.com/android/core/graphics/canvas-graphics/android-canvas-example/
 
 public class CustomCanvasView extends View {
+    public enum Tool {
+        None,
+        Pencil,
+        Eraser,
+        Circle
+    }
+
     public int width;
     public int height;
     private Bitmap mBitmap;
@@ -33,8 +40,8 @@ public class CustomCanvasView extends View {
     Path myPath;
     int currColor = Color.BLACK;
     public boolean isOn;
+    public Tool currentTool;
 
-    boolean eraser = false;
     public ArrayList<Stroke> allStrokes = new ArrayList<Stroke>();
 
     boolean changeBrushSize = false;
@@ -87,6 +94,7 @@ public class CustomCanvasView extends View {
         mPaint.setStrokeWidth(4f);
         brushes.add(mPaint);
         isOn = true;
+        currentTool = Tool.Pencil;
     }
 
     public void changeBrushSize()
@@ -143,7 +151,7 @@ public class CustomCanvasView extends View {
             Stroke s = new Stroke(p, pt);
             allStrokes.add(s);
             allStrokes.get(allStrokes.size() - 1).get_path().moveTo(x, y);
-            if (eraser) {
+            if (currentTool == Tool.Eraser) {
                 allStrokes.get(allStrokes.size() - 1).get_paint().setColor(Color.WHITE);
                 allStrokes.get(allStrokes.size() - 1).get_paint().setStrokeWidth(40f);
             }
@@ -212,15 +220,19 @@ public class CustomCanvasView extends View {
         return false;
     }
 
-    public void pencilOnClick()
-    {
-        eraser = false;
+    public void changeTool(Tool t) {
+        switch (t) {
+            case Pencil:
+                break;
+            case Eraser:
+                break;
+            case Circle:
+                break;
+        }
+
+        currentTool = t;
     }
 
-    public void eraserButtonOnClick()
-    {
-        eraser = true;
-    }
     public void setColor(int color){
         currColor = color;
     }

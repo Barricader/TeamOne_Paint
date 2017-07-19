@@ -3,10 +3,8 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -26,6 +24,12 @@ public class MainActivity extends AppCompatActivity {
     public void clearCanvas(View view) {
         customCanvas.clearCanvas();
     }
+
+    public void pencilOnClick(View v)
+    {
+        customCanvas.pencilOnClick();
+    }
+
     public void eraserButtonOnClick(View v)
     {
         customCanvas.eraserButtonOnClick();
@@ -122,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
     protected void ChangeColorHandler(View view){
         openColorDialog(true);
     }
+
     private void openColorDialog(boolean supportsAlpha) {
         AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, customCanvas.currColor, supportsAlpha, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override

@@ -18,7 +18,8 @@
         android:id="@+id/customCanvas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="#FFFFFF" />
+        android:background="@android:color/white"
+        android:textColor="#FFFFFF"/>
 
     <Button
         android:id="@+id/changeSizeButton"
@@ -27,5 +28,13 @@
         android:layout_gravity="bottom|left"
         android:onClick="changeBrushSize"
         android:text="change size" />
+
+    <Button
+        android:id="@+id/eraserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:onClick="eraserButtonOnClick"
+        android:text="Eraser" />
 
 </FrameLayout>

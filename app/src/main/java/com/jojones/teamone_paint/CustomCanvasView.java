@@ -26,11 +26,16 @@ public class CustomCanvasView extends View {
     private Paint mPaintResized;
     private float mX, mY;
     private static final float TOLERANCE = 5;
-    private float brushSizeIncrementer = 20;
+    private float brushSizeIncrementer = 0;
     ArrayList<Paint> brushes = new ArrayList<>();
     Paint myRedPaintFill;
     Paint myGreenPaintStroke;
     Path myPath;
+
+    boolean eraser = false;
+    public ArrayList<Stroke> allStrokes = new ArrayList<Stroke>();
+
+    boolean changeBrushSize = false;
 
 //    public DrawView(Context context, AttributeSet attrs) {
 //        super(context, attrs);
@@ -81,16 +86,21 @@ public class CustomCanvasView extends View {
         brushes.add(mPaint);
     }
 
-    public void changeBrushSize(){
+    public void changeBrushSize()
+    {
+        //Moved the logic to change brush size to StartTouch method - Juan
 
-        brushes.add(new Paint(){{
-            setAntiAlias(true);
-            setColor(Color.BLACK);
-            setStyle(Paint.Style.STROKE);
-            setStrokeJoin(Paint.Join.ROUND);
-            setStrokeWidth(10 +brushSizeIncrementer);
-        }});
+        //brushes.add(new Paint(){{
+            //setAntiAlias(true);
+            //setColor(Color.BLACK);
+            //setStyle(Paint.Style.STROKE);
+            //setStrokeJoin(Paint.Join.ROUND);
+            //setStrokeWidth(10 +brushSizeIncrementer);
+        //}});
+
         brushSizeIncrementer += 10;
+
+        changeBrushSize = true;
     }
 
     // override onSizeChanged
@@ -108,36 +118,70 @@ public class CustomCanvasView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         // draw the mPath with the mPaint on the canvas when onDraw
-        canvas.drawPath(mPath, brushes.get(brushes.size() -1));
+
+        ////canvas.drawPath(mPath, brushes.get(brushes.size() -1));
+
+        for (Stroke s : allStrokes) {
+            canvas.drawPath(s.get_path(), s.get_paint());
+        }
 
     }
 
     // when ACTION_DOWN start touch according to the x,y values
     private void startTouch(float x, float y) {
-        mPath.moveTo(x, y);
+        ////mPath.moveTo(x, y);
+        Path p = new Path();
+        Paint pt = new Paint();
+        pt.setAntiAlias(true);
+        pt.setColor(Color.BLACK);
+        pt.setStyle(Paint.Style.STROKE);
+        pt.setStrokeJoin(Paint.Join.ROUND);
+        pt.setStrokeWidth(4f);
+        Stroke s = new Stroke(p, pt);
+        allStrokes.add(s);
+        allStrokes.get(allStrokes.size() - 1).get_path().moveTo(x, y);
+        if(eraser)
+        {
+            allStrokes.get(allStrokes.size() - 1).get_paint().setColor(Color.WHITE);
+            allStrokes.get(allStrokes.size() - 1).get_paint().setStrokeWidth(40f);
+        }
+        //This is where the brush size is changed - Juan
+        if(changeBrushSize)
+        {
+            allStrokes.get(allStrokes.size() - 1).get_paint().setStrokeWidth(brushSizeIncrementer);
+            changeBrushSize = false;
+        }
         mX = x;
         mY = y;
     }
 
     // when ACTION_MOVE move touch according to the x,y values
     private void moveTouch(float x, float y) {
+        Path p = allStrokes.get(allStrokes.size() - 1).get_path();
         float dx = Math.abs(x - mX);
         float dy = Math.abs(y - mY);
         if (dx >= TOLERANCE || dy >= TOLERANCE) {
-            mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+            ////Changed "mPath" to "p"
+            p.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
             mX = x;
             mY = y;
         }
     }
 
     public void clearCanvas() {
-        mPath.reset();
+        for (Stroke s : allStrokes)
+        {
+            s.get_path().reset();
+        }
+        ////mPath.reset();
         invalidate();
     }
 
     // when ACTION_UP stop touch
-    private void upTouch() {
-        mPath.lineTo(mX, mY);
+    private void upTouch()
+    {
+        allStrokes.get(allStrokes.size() - 1).get_path().lineTo(mX, mY);
+        ////mPath.lineTo(mX, mY);
     }
 
     //override the onTouchEvent
@@ -161,5 +205,10 @@ public class CustomCanvasView extends View {
                 break;
         }
         return true;
+    }
+
+    public void eraserButtonOnClick()
+    {
+        eraser = !eraser;
     }
 }

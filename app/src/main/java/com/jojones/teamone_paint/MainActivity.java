@@ -17,4 +17,8 @@ public class MainActivity extends AppCompatActivity {
     public void clearCanvas(View view) {
         customCanvas.clearCanvas();
     }
+    public void eraserButtonOnClick(View v)
+    {
+        customCanvas.eraserButtonOnClick();
+    }
 }

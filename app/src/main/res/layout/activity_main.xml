@@ -55,8 +55,8 @@
             android:id="@+id/changeSizeButton"
             android:layout_width="88dp"
             android:layout_height="48dp"
-            android:layout_marginBottom="216dp"
-            android:layout_marginLeft="55dp"
+            android:layout_marginBottom="278dp"
+            android:layout_marginLeft="58dp"
             android:onClick="changeBrushSize"
             android:text="change size"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -84,6 +84,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
-    </android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="278dp"
+            android:layout_marginLeft="192dp"
+            android:onClick="ChangeColorHandler"
+            android:text="Change Color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

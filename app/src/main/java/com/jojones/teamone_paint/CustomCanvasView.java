@@ -212,9 +212,14 @@ public class CustomCanvasView extends View {
         return false;
     }
 
+    public void pencilOnClick()
+    {
+        eraser = false;
+    }
+
     public void eraserButtonOnClick()
     {
-        eraser = !eraser;
+        eraser = true;
     }
     public void setColor(int color){
         currColor = color;

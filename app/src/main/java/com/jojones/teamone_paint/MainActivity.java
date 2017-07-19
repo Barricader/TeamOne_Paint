@@ -1,22 +1,12 @@
 package com.jojones.teamone_paint;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -43,50 +33,32 @@ public class MainActivity extends AppCompatActivity {
 
     public void openOptions(View v) {
         ConstraintLayout opts = (ConstraintLayout) findViewById(R.id.options);
-
         findViewById(R.id.imgOpenOptions).setVisibility(View.INVISIBLE);
 
-        LayoutParams params = opts.getLayoutParams();
-
-        // Changes the height and width to the specified *pixels*
-//        float heightDP = 604f;
-//        float scale = getResources().getDisplayMetrics().density;
-//
-//        params.height = (int) (heightDP * scale + 0.5f);
-//        opts.setLayoutParams(params);
         expand(opts);
     }
 
     public void closeOptions(View v) {
         ConstraintLayout opts = (ConstraintLayout) findViewById(R.id.options);
-
         findViewById(R.id.imgOpenOptions).setVisibility(View.VISIBLE);
-
-        LayoutParams params = opts.getLayoutParams();
-
-        // Changes the height and width to the specified *pixels*
-//        params.height = 1;
-//        opts.setLayoutParams(params);
 
         collapse(opts);
     }
 
     public static void expand(final View v) {
-        float heightDP = 604f;
-        float scale = v.getContext().getResources().getDisplayMetrics().density;
+        final float heightDP = 604f;
+        final float scale = v.getContext().getResources().getDisplayMetrics().density;
 
         final int targetHeight = (int) (heightDP * scale + 0.5f);
 
         // Older versions of android (pre API 21) cancel animations for views with a height of 0.
         v.getLayoutParams().height = 1;
         v.setVisibility(View.VISIBLE);
-        Animation a = new Animation()
-        {
+        Animation a = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                v.getLayoutParams().height = interpolatedTime == 1
-                        ? targetHeight
-                        : (int)(targetHeight * interpolatedTime);
+//                v.getLayoutParams().height = interpolatedTime == 1 ? targetHeight : (int)(targetHeight * interpolatedTime);
+                v.getLayoutParams().height = (int)(targetHeight * interpolatedTime);
                 v.requestLayout();
             }
 
@@ -95,6 +67,21 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         };
+        a.setFillBefore(true);
+        a.setFillAfter(true);
+
+        a.setAnimationListener(new Animation.AnimationListener() {
+                                   public void onAnimationEnd(Animation animation) {
+                                       v.setDrawingCacheEnabled(false);
+                                   }
+
+                                   public void onAnimationRepeat(Animation animation) {
+                                   }
+
+                                   public void onAnimationStart(Animation animation) {
+                                       v.setDrawingCacheEnabled(true);
+                                   }
+                               });
 
         // 1dp/ms
         a.setDuration((int)(targetHeight / v.getContext().getResources().getDisplayMetrics().density));
@@ -120,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         };
+
+        a.setFillBefore(true);
+        a.setFillAfter(true);
 
         // 1dp/ms
         a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density));

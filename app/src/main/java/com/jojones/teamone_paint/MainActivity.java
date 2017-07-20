@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         viewTools.add(findViewById(R.id.eraserButton));
         viewTools.add(findViewById(R.id.circleButton));
         viewTools.add(findViewById(R.id.squareButton));
+        viewTools.add(findViewById(R.id.sprayButton));
 
         resetColor();
         findViewById(R.id.pencilButton).setBackgroundColor(Color.GRAY);

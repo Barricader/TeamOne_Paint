@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -39,8 +41,45 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.pencilButton).setBackgroundColor(Color.GRAY);
     }
 
-    public void changeBrushSize(View view) {
+    public void changeBrushSize(View view){
         customCanvas.changeBrushSize();
+        final PopupMenu popupMenu = new PopupMenu(this,findViewById(R.id.changeSizeButton));
+        popupMenu.getMenuInflater().inflate(R.menu.brushsizemenulayout,popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                //Toast.makeText(MainActivity.this, "You Clicked: " + item.getTitle(), Toast.LENGTH_LONG).show();
+                MenuItem menuItem1 = (MenuItem) findViewById(R.id.one);
+                switch (item.getItemId()){
+                    case R.id.one:
+                        customCanvas.brushSizeIncrementer = 10;
+                        break;
+                    case R.id.two:
+                        customCanvas.brushSizeIncrementer = 20;
+                        break;
+                    case R.id.three:
+                        customCanvas.brushSizeIncrementer += 5;
+                        Toast.makeText(MainActivity.this,"Current Brush Size: "+customCanvas.brushSizeIncrementer,Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.four:
+                        if (customCanvas.brushSizeIncrementer <= 5){
+                            Toast.makeText(MainActivity.this,"Minimum Brush Size Reached",Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(MainActivity.this,"Current Brush Size: "+customCanvas.brushSizeIncrementer,Toast.LENGTH_SHORT).show();
+                            customCanvas.brushSizeIncrementer -= 5;
+                        }
+                        break;
+                    case R.id.five:
+                        customCanvas.brushSizeIncrementer = 4;
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+        popupMenu.show();
     }
 
     public void clearCanvas(View view) {

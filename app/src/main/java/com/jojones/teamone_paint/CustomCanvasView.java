@@ -37,7 +37,7 @@ public class CustomCanvasView extends View {
     private Paint mPaint;
     private float mX, mY;
     private static final float TOLERANCE = 5;
-    private float brushSizeIncrementer = 1;
+    public float brushSizeIncrementer = 1;
     ArrayList<Paint> brushes = new ArrayList<>();
     int currColor = Color.BLACK;
     public boolean isOn;
@@ -135,7 +135,7 @@ public class CustomCanvasView extends View {
             pt.setColor(currColor);
             pt.setStyle(Paint.Style.STROKE);
             pt.setStrokeJoin(Paint.Join.ROUND);
-            pt.setStrokeWidth(4f);
+            pt.setStrokeWidth(brushSizeIncrementer);
             Stroke s = new Stroke(p, pt);
             drawables.add(s);
             ((Stroke) drawables.get(drawables.size() - 1)).get_path().moveTo(x, y);
@@ -146,10 +146,10 @@ public class CustomCanvasView extends View {
             }
 
             //This is where the brush size is changed - Juan
-            if (changeBrushSize) {
-                ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setStrokeWidth(brushSizeIncrementer);
-                changeBrushSize = false;
-            }
+//            if (changeBrushSize) {
+//                ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setStrokeWidth(brushSizeIncrementer);
+//                changeBrushSize = false;
+//            }
 
             if(addText){
                 ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setTextSize(100f);

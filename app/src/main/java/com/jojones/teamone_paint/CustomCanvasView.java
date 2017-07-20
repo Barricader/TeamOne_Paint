@@ -1,6 +1,7 @@
 package com.jojones.teamone_paint;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -39,6 +40,7 @@ public class CustomCanvasView extends View {
     public long layer;
 
     boolean changeBrushSize = false;
+    boolean addText = false;
 
     public CustomCanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
@@ -53,6 +55,8 @@ public class CustomCanvasView extends View {
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(4f);
         brushes.add(mPaint);
+        Stroke s = new Stroke(mPath, mPaint);
+        drawables.add(s);
 
         isOn = true;
         currentTool = Tool.Pencil;
@@ -91,6 +95,13 @@ public class CustomCanvasView extends View {
                 canvas.drawRect(s.x, s.y, s.x + s.w, s.y + s.h, s.p);
             }
         }
+        if (addText && drawables.size() - 1 > 0){
+            SharedPreferences sharedPreferences = this.context.getSharedPreferences("com.example.sharedpref", Context.MODE_PRIVATE);
+            String test = sharedPreferences.getString("one", "");
+            canvas.drawText(test, 100, 250,((Stroke) drawables.get(drawables.size() - 1)).get_paint());
+            //addText = false;
+        }
+        //addText = false;
     }
 
     private void startTouch(float x, float y) {
@@ -115,6 +126,10 @@ public class CustomCanvasView extends View {
             if (changeBrushSize) {
                 ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setStrokeWidth(brushSizeIncrementer);
                 changeBrushSize = false;
+            }
+
+            if(addText){
+                ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setTextSize(100f);
             }
             mX = x;
             mY = y;
@@ -224,5 +239,11 @@ public class CustomCanvasView extends View {
 
     public void setColor(int color) {
         currColor = color;
+    }
+
+    public void addTextOnClick()
+    {
+        addText = true;
+        invalidate();
     }
 }

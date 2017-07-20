@@ -1,5 +1,7 @@
 package com.jojones.teamone_paint;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -7,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -178,5 +181,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+
+    public void addTextOnClick(View v)
+    {
+        SharedPreferences sharedPreferences =
+                this.getSharedPreferences("com.example.sharedpref",
+                        Context.MODE_PRIVATE);
+        sharedPreferences.edit().putString("one", ((EditText)findViewById(R.id.userInputEditText)).getText().toString()).apply();
+        customCanvas.addTextOnClick();
     }
 }

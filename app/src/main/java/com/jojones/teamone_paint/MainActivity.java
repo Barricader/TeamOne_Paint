@@ -1,4 +1,6 @@
 package com.jojones.teamone_paint;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -7,11 +9,14 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import yuku.ambilwarna.AmbilWarnaDialog;
 //https://github.com/yukuku/ambilwarna
 
 public class MainActivity extends AppCompatActivity {
     CustomCanvasView customCanvas;
+    ArrayList<View> viewTools;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,34 +24,67 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         customCanvas = (CustomCanvasView) findViewById(R.id.customCanvas);
 
+        viewTools = new ArrayList<>();
+
+        viewTools.add(findViewById(R.id.pencilButton));
+        viewTools.add(findViewById(R.id.eraserButton));
+        viewTools.add(findViewById(R.id.circleButton));
+        viewTools.add(findViewById(R.id.squareButton));
+
+        resetColor();
+        findViewById(R.id.pencilButton).setBackgroundColor(Color.GRAY);
     }
-    public void changeBrushSize(View view){customCanvas.changeBrushSize();}
+
+    public void changeBrushSize(View view) {
+        customCanvas.changeBrushSize();
+    }
+
     public void clearCanvas(View view) {
         customCanvas.clearCanvas();
     }
 
-    public void pencilOnClick(View v)
-    {
-        customCanvas.pencilOnClick();
-    }
+    public void toolOnClick(View v) {
+        resetColor();
+        v.setBackgroundColor(Color.GRAY);
 
-    public void eraserButtonOnClick(View v)
-    {
-        customCanvas.eraserButtonOnClick();
+        switch (v.getId()) {
+            case R.id.pencilButton:
+                customCanvas.changeTool(CustomCanvasView.Tool.Pencil);
+                break;
+            case R.id.eraserButton:
+                customCanvas.changeTool(CustomCanvasView.Tool.Eraser);
+                break;
+            case R.id.circleButton:
+                customCanvas.changeTool(CustomCanvasView.Tool.Circle);
+                break;
+            case R.id.squareButton:
+                customCanvas.changeTool(CustomCanvasView.Tool.Square);
+                break;
+        }
     }
 
     public void openOptions(View v) {
         ConstraintLayout opts = (ConstraintLayout) findViewById(R.id.options);
-        findViewById(R.id.imgOpenOptions).setVisibility(View.INVISIBLE);
+        findViewById(R.id.imgOpenOptions).setClickable(false);
 
         expand(opts);
     }
 
     public void closeOptions(View v) {
         ConstraintLayout opts = (ConstraintLayout) findViewById(R.id.options);
-        findViewById(R.id.imgOpenOptions).setVisibility(View.VISIBLE);
+        findViewById(R.id.imgOpenOptions).setClickable(true);
 
         collapse(opts);
+    }
+
+    public void undo(View v) {
+        customCanvas.undo();
+    }
+
+    public void resetColor() {
+        for (View v : viewTools) {
+            v.setBackgroundColor(Color.LTGRAY);
+        }
     }
 
     public void expand(final View v) {
@@ -62,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 v.setVisibility(View.VISIBLE);
-                v.getLayoutParams().height = (int)(targetHeight * interpolatedTime);
+                v.getLayoutParams().height = (int) (targetHeight * interpolatedTime);
                 v.requestLayout();
             }
 
@@ -92,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         customCanvas.isOn = false;
 
         // 1dp/ms
-        a.setDuration((int)(targetHeight / v.getContext().getResources().getDisplayMetrics().density));
+        a.setDuration((int) (targetHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
 
@@ -123,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         v.startAnimation(a);
     }
 
-    protected void ChangeColorHandler(View view){
+    protected void ChangeColorHandler(View view) {
         openColorDialog(true);
     }
 
@@ -133,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
             public void onOk(AmbilWarnaDialog dialog, int color) {
                 customCanvas.setColor(color);
             }
+
             @Override
             public void onCancel(AmbilWarnaDialog dialog) {
                 Toast.makeText(getApplicationContext(), "Action canceled!", Toast.LENGTH_SHORT).show();

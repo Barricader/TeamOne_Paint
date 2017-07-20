@@ -34,7 +34,7 @@
         android:layout_height="604dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
-        android:background="@android:color/darker_gray"
+        android:background="#A0CCCCCC"
         android:minHeight="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -76,24 +76,46 @@
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <Button
+            android:id="@+id/pencilButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="505dp"
+            android:layout_marginLeft="16dp"
+            android:onClick="toolOnClick"
+            android:text="Pencil"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
             android:id="@+id/eraserButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="505dp"
-            android:layout_marginLeft="105dp"
-            android:onClick="eraserButtonOnClick"
+            android:layout_marginLeft="104dp"
+            android:onClick="toolOnClick"
             android:text="Eraser"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <Button
-            android:id="@+id/Pencil"
+            android:id="@+id/circleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="505dp"
+            android:layout_marginLeft="192dp"
+            android:onClick="toolOnClick"
+            android:text="Circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/squareButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="457dp"
             android:layout_marginLeft="16dp"
-            android:onClick="pencilOnClick"
-            android:text="Pencil"
+            android:onClick="toolOnClick"
+            android:text="Square"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -116,6 +138,17 @@
             android:layout_marginLeft="16dp"
             android:onClick="clearCanvas"
             android:text="Clear Canvas"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/btnUndo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="126dp"
+            android:layout_marginLeft="142dp"
+            android:onClick="undo"
+            android:text="Undo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 

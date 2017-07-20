@@ -7,78 +7,45 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
 
-// Code from https://examples.javacodegeeks.com/android/core/graphics/canvas-graphics/android-canvas-example/
-
 public class CustomCanvasView extends View {
-    public int width;
-    public int height;
+    enum Tool {
+        Pencil,
+        Eraser,
+        Circle,
+        Square,
+        Text
+    }
+
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Path mPath;
     Context context;
     private Paint mPaint;
-    private Paint mPaintResized;
     private float mX, mY;
     private static final float TOLERANCE = 5;
     private float brushSizeIncrementer = 0;
     ArrayList<Paint> brushes = new ArrayList<>();
-    Paint myRedPaintFill;
-    Paint myGreenPaintStroke;
-    Path myPath;
     int currColor = Color.BLACK;
     public boolean isOn;
+    public Tool currentTool;
 
-    boolean eraser = false;
-    public ArrayList<Stroke> allStrokes = new ArrayList<Stroke>();
+    public ArrayList<Object> drawables = new ArrayList<>();
+
+    public long layer;
 
     boolean changeBrushSize = false;
-
-//    public DrawView(Context context, AttributeSet attrs) {
-//        super(context, attrs);
-//        init();
-//
-//    }
-//    private void init(){
-//        myRedPaintFill = new Paint();
-//        myRedPaintFill.setColor(Color.RED);
-//        myRedPaintFill.setStyle(Paint.Style.FILL);
-//
-//        myGreenPaintStroke = new Paint();
-//        myGreenPaintStroke.setColor(0xff337722); // aarrggbb alpha is first
-//        myGreenPaintStroke.setStyle(Paint.Style.STROKE);
-//        myGreenPaintStroke.setStrokeWidth(10);
-//    }
-//
-//    protected void onDraw(Canvas canvas) {
-//        super.onDraw(canvas);
-//
-//        canvas.drawLine(0, 0, 200, 200, myGreenPaintStroke);
-//        canvas.drawCircle(100, 300, 40, myRedPaintFill);
-//        canvas.drawRect(200,300, 250, 350, myGreenPaintStroke);
-//
-//        myPath = new Path();
-//        myPath.moveTo(400,400);
-//        myPath.lineTo(500,600);
-//        myPath.lineTo(300,600);
-//        canvas.drawPath(myPath, myRedPaintFill);
-//
-//    }
 
     public CustomCanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
         context = c;
 
-        // we set a new Path
         mPath = new Path();
 
-
-        // and we set a new Paint with the desired attributes
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(Color.BLACK);
@@ -86,21 +53,13 @@ public class CustomCanvasView extends View {
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(4f);
         brushes.add(mPaint);
+
         isOn = true;
+        currentTool = Tool.Pencil;
+        layer = 0;
     }
 
-    public void changeBrushSize()
-    {
-        //Moved the logic to change brush size to StartTouch method - Juan
-
-        //brushes.add(new Paint(){{
-            //setAntiAlias(true);
-            //setColor(Color.BLACK);
-            //setStyle(Paint.Style.STROKE);
-            //setStrokeJoin(Paint.Join.ROUND);
-            //setStrokeWidth(10 +brushSizeIncrementer);
-        //}});
-
+    public void changeBrushSize() {
         brushSizeIncrementer += 10;
 
         changeBrushSize = true;
@@ -116,23 +75,26 @@ public class CustomCanvasView extends View {
         mCanvas = new Canvas(mBitmap);
     }
 
-    // override onDraw
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // draw the mPath with the mPaint on the canvas when onDraw
 
-        ////canvas.drawPath(mPath, brushes.get(brushes.size() -1));
-
-        for (Stroke s : allStrokes) {
-            canvas.drawPath(s.get_path(), s.get_paint());
+        for (Object o : drawables) {
+            if (o instanceof Stroke) {
+                Stroke s = (Stroke) o;
+                canvas.drawPath(s.get_path(), s.get_paint());
+            } else if (o instanceof Circle) {
+                Circle c = (Circle) o;
+                canvas.drawCircle(c.x, c.y, c.r, c.p);
+            } else if (o instanceof Square) {
+                Square s = (Square) o;
+                canvas.drawRect(s.x, s.y, s.x + s.w, s.y + s.h, s.p);
+            }
         }
-
     }
 
-    // when ACTION_DOWN start touch according to the x,y values
     private void startTouch(float x, float y) {
-            ////mPath.moveTo(x, y);
+        if (currentTool == Tool.Pencil || currentTool == Tool.Eraser) {
             Path p = new Path();
             Paint pt = new Paint();
             pt.setAntiAlias(true);
@@ -141,51 +103,63 @@ public class CustomCanvasView extends View {
             pt.setStrokeJoin(Paint.Join.ROUND);
             pt.setStrokeWidth(4f);
             Stroke s = new Stroke(p, pt);
-            allStrokes.add(s);
-            allStrokes.get(allStrokes.size() - 1).get_path().moveTo(x, y);
-            if (eraser) {
-                allStrokes.get(allStrokes.size() - 1).get_paint().setColor(Color.WHITE);
-                allStrokes.get(allStrokes.size() - 1).get_paint().setStrokeWidth(40f);
+            drawables.add(s);
+            ((Stroke) drawables.get(drawables.size() - 1)).get_path().moveTo(x, y);
+
+            if (currentTool == Tool.Eraser) {
+                ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setColor(Color.WHITE);
+                ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setStrokeWidth(40f);
             }
+
             //This is where the brush size is changed - Juan
             if (changeBrushSize) {
-                allStrokes.get(allStrokes.size() - 1).get_paint().setStrokeWidth(brushSizeIncrementer);
+                ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setStrokeWidth(brushSizeIncrementer);
                 changeBrushSize = false;
             }
             mX = x;
             mY = y;
+        }
+
+        if (currentTool == Tool.Circle) {
+            circleTouch(x, y);
+            layer++;
+        }
+
+        if (currentTool == Tool.Square) {
+            squareTouch(x, y);
+            layer++;
+        }
     }
 
-    // when ACTION_MOVE move touch according to the x,y values
     private void moveTouch(float x, float y) {
-        Path p = allStrokes.get(allStrokes.size() - 1).get_path();
-        float dx = Math.abs(x - mX);
-        float dy = Math.abs(y - mY);
-        if (dx >= TOLERANCE || dy >= TOLERANCE) {
-            ////Changed "mPath" to "p"
-            p.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
-            mX = x;
-            mY = y;
+        if (currentTool == Tool.Pencil || currentTool == Tool.Eraser) {
+            Path p = ((Stroke) drawables.get(drawables.size() - 1)).get_path();
+            float dx = Math.abs(x - mX);
+            float dy = Math.abs(y - mY);
+            if (dx >= TOLERANCE || dy >= TOLERANCE) {
+                p.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+                mX = x;
+                mY = y;
+            }
+        }
+
+        if (currentTool == Tool.Circle) {
+            circleTouch(x, y);
+            layer++;
+        }
+
+        if (currentTool == Tool.Square) {
+            squareTouch(x, y);
+            layer++;
         }
     }
 
-    public void clearCanvas() {
-        for (Stroke s : allStrokes)
-        {
-            s.get_path().reset();
+    private void upTouch() {
+        if (currentTool == Tool.Pencil || currentTool == Tool.Eraser) {
+            ((Stroke) drawables.get(drawables.size() - 1)).get_path().lineTo(mX, mY);
         }
-        ////mPath.reset();
-        invalidate();
     }
 
-    // when ACTION_UP stop touch
-    private void upTouch()
-    {
-        allStrokes.get(allStrokes.size() - 1).get_path().lineTo(mX, mY);
-        ////mPath.lineTo(mX, mY);
-    }
-
-    //override the onTouchEvent
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (isOn) {
@@ -212,16 +186,43 @@ public class CustomCanvasView extends View {
         return false;
     }
 
-    public void pencilOnClick()
-    {
-        eraser = false;
+    public void circleTouch(float x, float y) {
+        Paint pt = new Paint();
+        pt.setAntiAlias(true);
+        pt.setColor(currColor);
+        pt.setStyle(Paint.Style.STROKE);
+        pt.setStrokeWidth(10f);
+
+        drawables.add(new Circle(x, y, 40, pt));
     }
 
-    public void eraserButtonOnClick()
-    {
-        eraser = true;
+    public void squareTouch(float x, float y) {
+        Paint pt = new Paint();
+        pt.setAntiAlias(true);
+        pt.setColor(currColor);
+        pt.setStyle(Paint.Style.STROKE);
+        pt.setStrokeWidth(10f);
+
+        drawables.add(new Square(x, y, 50, 50, pt));
     }
-    public void setColor(int color){
+
+    public void clearCanvas() {
+        drawables.clear();
+        invalidate();
+    }
+
+    public void undo() {
+        if (drawables.size() > 0) {
+            drawables.remove(drawables.size() - 1);
+        }
+        invalidate();
+    }
+
+    public void changeTool(Tool t) {
+        currentTool = t;
+    }
+
+    public void setColor(int color) {
         currColor = color;
     }
 }

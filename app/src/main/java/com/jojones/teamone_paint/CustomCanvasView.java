@@ -1,16 +1,24 @@
 package com.jojones.teamone_paint;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomCanvasView extends View {
     enum Tool {
@@ -18,6 +26,7 @@ public class CustomCanvasView extends View {
         Eraser,
         Circle,
         Square,
+        SprayBrush,
         Text
     }
 
@@ -28,7 +37,7 @@ public class CustomCanvasView extends View {
     private Paint mPaint;
     private float mX, mY;
     private static final float TOLERANCE = 5;
-    private float brushSizeIncrementer = 0;
+    private float brushSizeIncrementer = 1;
     ArrayList<Paint> brushes = new ArrayList<>();
     int currColor = Color.BLACK;
     public boolean isOn;
@@ -39,6 +48,15 @@ public class CustomCanvasView extends View {
     public long layer;
 
     boolean changeBrushSize = false;
+    boolean addText = false;
+
+    public float x;
+    public float y;
+
+    private float mBitmapSize = 55;
+    private Bitmap mBitmapBrush;
+    private SprayBrush mBitmapBrushDimensions;
+    private List<SprayBrush> mPositions = new ArrayList<SprayBrush>();
 
     public CustomCanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
@@ -53,7 +71,10 @@ public class CustomCanvasView extends View {
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(4f);
         brushes.add(mPaint);
+        Stroke s = new Stroke(mPath, mPaint);
+        drawables.add(s);
 
+        mBitmapBrush = BitmapFactory.decodeResource(context.getResources(), R.drawable.spraypaint);
         isOn = true;
         currentTool = Tool.Pencil;
         layer = 0;
@@ -61,7 +82,7 @@ public class CustomCanvasView extends View {
 
     public void changeBrushSize() {
         brushSizeIncrementer += 10;
-
+        mBitmapSize += 10;
         changeBrushSize = true;
     }
 
@@ -72,6 +93,7 @@ public class CustomCanvasView extends View {
 
         // your Canvas will draw onto the defined Bitmap
         mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        mBitmapBrushDimensions = new SprayBrush(mBitmapBrush.getWidth(),mBitmapBrush.getHeight(), 12, currColor, mBitmap);
         mCanvas = new Canvas(mBitmap);
     }
 
@@ -89,8 +111,20 @@ public class CustomCanvasView extends View {
             } else if (o instanceof Square) {
                 Square s = (Square) o;
                 canvas.drawRect(s.x, s.y, s.x + s.w, s.y + s.h, s.p);
+            } else if (o instanceof SprayBrush){
+                SprayBrush s = (SprayBrush) o;
+                Paint paint = new Paint();
+                paint.setColorFilter(new PorterDuffColorFilter(s.color, PorterDuff.Mode.SRC_IN));
+                canvas.drawBitmap(s.bitmap,s.x - (s.size / 2),s.y - (s.size / 2), paint);
             }
         }
+        if (addText && drawables.size() - 1 > 0){
+            SharedPreferences sharedPreferences = this.context.getSharedPreferences("com.example.sharedpref", Context.MODE_PRIVATE);
+            String test = sharedPreferences.getString("one", "");
+            canvas.drawText(test, 100, 250,((Stroke) drawables.get(drawables.size() - 1)).get_paint());
+            //addText = false;
+        }
+        //addText = false;
     }
 
     private void startTouch(float x, float y) {
@@ -116,6 +150,10 @@ public class CustomCanvasView extends View {
                 ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setStrokeWidth(brushSizeIncrementer);
                 changeBrushSize = false;
             }
+
+            if(addText){
+                ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setTextSize(100f);
+            }
             mX = x;
             mY = y;
         }
@@ -128,6 +166,10 @@ public class CustomCanvasView extends View {
         if (currentTool == Tool.Square) {
             squareTouch(x, y);
             layer++;
+        }
+
+        if (currentTool == Tool.SprayBrush){
+            sprayTouch(x,y);
         }
     }
 
@@ -150,6 +192,11 @@ public class CustomCanvasView extends View {
 
         if (currentTool == Tool.Square) {
             squareTouch(x, y);
+            layer++;
+        }
+
+        if (currentTool == Tool.SprayBrush){
+        sprayTouch(x,y);
             layer++;
         }
     }
@@ -186,6 +233,11 @@ public class CustomCanvasView extends View {
         return false;
     }
 
+    public void sprayTouch(float x, float y){
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmapBrush, Math.round(mBitmapSize), Math.round(mBitmapSize), true);
+        drawables.add(new SprayBrush(x,y,scaledBitmap.getHeight(),currColor, scaledBitmap));
+    }
     public void circleTouch(float x, float y) {
         Paint pt = new Paint();
         pt.setAntiAlias(true);
@@ -224,5 +276,11 @@ public class CustomCanvasView extends View {
 
     public void setColor(int color) {
         currColor = color;
+    }
+
+    public void addTextOnClick()
+    {
+        addText = true;
+        invalidate();
     }
 }

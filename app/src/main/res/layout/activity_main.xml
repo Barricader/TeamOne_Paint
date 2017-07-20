@@ -10,8 +10,6 @@
         android:id="@+id/customCanvas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
         android:background="@android:color/white"
         android:textColor="#FFFFFF"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -26,14 +24,13 @@
         android:onClick="openOptions"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/cog" />
+        app:srcCompat="@drawable/cog"
+        android:layout_marginEnd="8dp"/>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/options"
         android:layout_width="412dp"
         android:layout_height="604dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
         android:background="#A0CCCCCC"
         android:minHeight="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -49,7 +46,8 @@
             android:textColor="@android:color/black"
             android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
         <TextView
             android:id="@+id/txtBrushOptions"
@@ -61,7 +59,8 @@
             android:textColor="@android:color/black"
             android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
         <TextView
             android:id="@+id/txtCanvasOptions"
@@ -73,7 +72,8 @@
             android:textColor="@android:color/black"
             android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
         <Button
             android:id="@+id/pencilButton"
@@ -84,7 +84,8 @@
             android:onClick="toolOnClick"
             android:text="Pencil"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
         <Button
             android:id="@+id/eraserButton"
@@ -95,7 +96,8 @@
             android:onClick="toolOnClick"
             android:text="Eraser"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="104dp"/>
 
         <Button
             android:id="@+id/circleButton"
@@ -106,7 +108,8 @@
             android:onClick="toolOnClick"
             android:text="Circle"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="192dp"/>
 
         <Button
             android:id="@+id/sprayButton"
@@ -128,7 +131,8 @@
             android:onClick="toolOnClick"
             android:text="Square"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
         <Button
             android:id="@+id/changeSizeButton"
@@ -139,7 +143,8 @@
             android:onClick="changeBrushSize"
             android:text="change size"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
         <Button
             android:id="@+id/btnClearCanvas"
@@ -150,7 +155,8 @@
             android:onClick="clearCanvas"
             android:text="Clear Canvas"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
         <Button
             android:id="@+id/btnUndo"
@@ -161,7 +167,8 @@
             android:onClick="undo"
             android:text="Undo"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="142dp"/>
 
         <Button
             android:id="@+id/closeOptions"
@@ -172,7 +179,8 @@
             android:onClick="closeOptions"
             android:text="Close"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="162dp"/>
 
         <Button
             android:id="@+id/button"
@@ -183,7 +191,31 @@
             android:onClick="ChangeColorHandler"
             android:text="Change Color"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="128dp"/>
+        <EditText
+            android:id="@+id/userInputEditText"
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="409dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginStart="16dp"
+            android:ems="10"
+            android:hint="User Text"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <Button
+            android:id="@+id/addTextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="409dp"
+            android:layout_marginLeft="14dp"
+            android:onClick="addTextOnClick"
+            android:text="Add Text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/userInputEditText"/>
 
     </android.support.constraint.ConstraintLayout>
 

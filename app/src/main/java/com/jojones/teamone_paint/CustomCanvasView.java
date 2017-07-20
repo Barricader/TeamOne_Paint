@@ -1,6 +1,7 @@
 package com.jojones.teamone_paint;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -47,6 +48,7 @@ public class CustomCanvasView extends View {
     public long layer;
 
     boolean changeBrushSize = false;
+    boolean addText = false;
 
     public float x;
     public float y;
@@ -69,6 +71,8 @@ public class CustomCanvasView extends View {
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(4f);
         brushes.add(mPaint);
+        Stroke s = new Stroke(mPath, mPaint);
+        drawables.add(s);
 
         mBitmapBrush = BitmapFactory.decodeResource(context.getResources(), R.drawable.spraypaint);
         isOn = true;
@@ -116,6 +120,13 @@ public class CustomCanvasView extends View {
                 canvas.drawBitmap(scaledBitmap,s.x - (s.size / 2),s.y - (s.size / 2), paint);
             }
         }
+        if (addText && drawables.size() - 1 > 0){
+            SharedPreferences sharedPreferences = this.context.getSharedPreferences("com.example.sharedpref", Context.MODE_PRIVATE);
+            String test = sharedPreferences.getString("one", "");
+            canvas.drawText(test, 100, 250,((Stroke) drawables.get(drawables.size() - 1)).get_paint());
+            //addText = false;
+        }
+        //addText = false;
     }
 
     private void startTouch(float x, float y) {
@@ -139,9 +150,11 @@ public class CustomCanvasView extends View {
             //This is where the brush size is changed - Juan
             if (changeBrushSize) {
                 ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setStrokeWidth(brushSizeIncrementer);
-
-
                 changeBrushSize = false;
+            }
+
+            if(addText){
+                ((Stroke) drawables.get(drawables.size() - 1)).get_paint().setTextSize(100f);
             }
             mX = x;
             mY = y;
@@ -266,4 +279,9 @@ public class CustomCanvasView extends View {
         currColor = color;
     }
 
+    public void addTextOnClick()
+    {
+        addText = true;
+        invalidate();
+    }
 }

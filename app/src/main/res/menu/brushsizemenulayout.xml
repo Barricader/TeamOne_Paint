@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="50px"
+    android:layout_width="50px">
+    <item
+        android:id="@+id/one"
+        android:icon="@drawable/option1"
+
+
+        android:title="10 Pixels" />
+    <item
+        android:id="@+id/two"
+        android:title="20 Pixels" />
+    <item
+        android:id="@+id/three"
+        android:title="+ 5 Pixels" />
+    <item
+        android:id="@+id/four"
+        android:title="- 5 Pixels" />
+    <item
+        android:id="@+id/five"
+        android:title="Reset Brush Size" />
+
+
+</menu>

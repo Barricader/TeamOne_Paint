@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.squareButton:
                 customCanvas.changeTool(CustomCanvasView.Tool.Square);
                 break;
+            case R.id.sprayButton:
+                customCanvas.changeTool(CustomCanvasView.Tool.SprayBrush);
         }
     }
 

@@ -101,10 +101,21 @@
             android:id="@+id/circleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="505dp"
-            android:layout_marginLeft="192dp"
+            android:layout_marginBottom="457dp"
+            android:layout_marginLeft="107dp"
             android:onClick="toolOnClick"
             android:text="Circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/sprayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="505dp"
+            android:layout_marginLeft="195dp"
+            android:onClick="toolOnClick"
+            android:text="Spray Can"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 

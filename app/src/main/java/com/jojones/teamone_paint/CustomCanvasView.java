@@ -93,7 +93,7 @@ public class CustomCanvasView extends View {
 
         // your Canvas will draw onto the defined Bitmap
         mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        mBitmapBrushDimensions = new SprayBrush(mBitmapBrush.getWidth(),mBitmapBrush.getHeight(), 12, currColor);
+        mBitmapBrushDimensions = new SprayBrush(mBitmapBrush.getWidth(),mBitmapBrush.getHeight(), 12, currColor, mBitmap);
         mCanvas = new Canvas(mBitmap);
     }
 
@@ -115,9 +115,7 @@ public class CustomCanvasView extends View {
                 SprayBrush s = (SprayBrush) o;
                 Paint paint = new Paint();
                 paint.setColorFilter(new PorterDuffColorFilter(s.color, PorterDuff.Mode.SRC_IN));
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmapBrush, Math.round(mBitmapSize), Math.round(mBitmapSize), true);
-                s.size = scaledBitmap.getHeight();
-                canvas.drawBitmap(scaledBitmap,s.x - (s.size / 2),s.y - (s.size / 2), paint);
+                canvas.drawBitmap(s.bitmap,s.x - (s.size / 2),s.y - (s.size / 2), paint);
             }
         }
         if (addText && drawables.size() - 1 > 0){
@@ -237,7 +235,8 @@ public class CustomCanvasView extends View {
 
     public void sprayTouch(float x, float y){
 
-        drawables.add(new SprayBrush(x,y,mBitmapBrush.getHeight(),currColor));
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmapBrush, Math.round(mBitmapSize), Math.round(mBitmapSize), true);
+        drawables.add(new SprayBrush(x,y,scaledBitmap.getHeight(),currColor, scaledBitmap));
     }
     public void circleTouch(float x, float y) {
         Paint pt = new Paint();

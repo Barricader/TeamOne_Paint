@@ -1,5 +1,6 @@
 package com.jojones.teamone_paint;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 
@@ -12,10 +13,12 @@ public class SprayBrush {
     float y;
     float size;
     int color;
-    public SprayBrush(float x, float y, float size, int color){
+    Bitmap bitmap;
+    public SprayBrush(float x, float y, float size, int color, Bitmap bitmap){
         this.x = x;
         this.y = y;
         this.size = size;
         this.color = color;
+        this.bitmap = bitmap;
     }
 }
